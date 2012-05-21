@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.bibliocustomviews">
+  <!-- Include direct package dependencies -->
+  <genericsetup:registerProfile
+      name="qi"
+      title="collective Policy QI"
+      directory="profiles/qi"
+      description="Turn a Plone site into the collective QIINFO site."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+  <genericsetup:registerProfile
+      name="default"
+      title="collective.bibliocustomviews"
+      directory="profiles/default"
+      description="Install the collective.bibliocustomviews addon on this plone site."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+  <genericsetup:registerProfile
+      title="collective.bibliocustomviews uninstall" 
+      name="uninstall"
+      description="Uninstall the collective.bibliocustomviews addon on tbis plone site."
+      directory="profiles/uninstall"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      />
+  <genericsetup:importStep
+      name="collective_bibliocustomviews setupVarious"
+      title="various setup for collective.bibliocustomviews "
+      description="description"
+      handler="collective.bibliocustomviews.setuphandlers.setupVarious">
+    <depends name="content"/>
+  </genericsetup:importStep>
+  <!-- migration steps -->
+  <genericsetup:importStep
+      name="collective_bibliocustomviews setupQi"
+      title="Quick Installer products dependencies setup for collective.bibliocustomviews"
+      description="description"
+      handler="collective.bibliocustomviews.setuphandlers.setupQi">
+    <depends name="content"/>
+  </genericsetup:importStep> 
+  <!-- -->
+  <utility factory=".app_config.HiddenProducts" name="collective.hiddenproducts"/>
+  <utility factory=".app_config.HiddenProfiles" name="collective.hiddenprofiles"/> 
+  <include package=".migrations"/>
+</configure> 

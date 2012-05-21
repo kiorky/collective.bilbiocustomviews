@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="collective.bibliocustomviews">
+
+  <!-- ' collective.bibliocustomviews' Zope 3 browser layer -->
+  <interface name="collective.bibliocustomviews-theme"
+      interface="collective.bibliocustomviews.interfaces.IThemeSpecific"
+      type="zope.publisher.interfaces.browser.IBrowserSkinType"
+    />
+  <interface  name="collective.bibliocustomviews" interface="collective.bibliocustomviews.interfaces.ILayer" />
+
+  <!-- Viewlets registration -->
+
+  <!-- Zope 3 browser views -->
+  <!--
+    <browser:page
+        layer="collective.bibliocustomviews.interfaces.ILayer"
+        for="collective.bibliocustomviews.interface.mycontent"
+        name="MyView"
+        class=".view.MyView"
+        allowed_interface=".view.IMyView"
+        permission="zope2.View"
+      />
+  -->
+
+  <!-- Zope 3 browser resources -->
+
+  <!-- Resource directory -->
+  <browser:resourceDirectory
+      name="collective.bibliocustomviews"
+      directory="resources"
+      layer="collective.bibliocustomviews.interfaces.ILayer"
+    />
+
+
+  <!-- vim:set ft=xml: -->
+</configure>
