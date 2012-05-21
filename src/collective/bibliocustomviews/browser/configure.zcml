@@ -35,5 +35,18 @@
     />
 
 
+
+  <browser:page
+      name="biblio_summary_view"
+      menu="plone_displayviews"
+      title="Bibliographic summary view"
+      for="Products.CMFBibliographyAT.interface.content.IBibliographyFolder"
+      class=".view.SummaryView"
+      template="summary.pt"
+      permission="zope.Public"
+      allowed_interface=".view.ISummaryView"
+      layer="collective.bibliocustomviews.interfaces.ILayer"
+      /> 
+
   <!-- vim:set ft=xml: -->
 </configure>
