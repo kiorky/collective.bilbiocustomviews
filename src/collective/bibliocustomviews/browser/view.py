@@ -19,9 +19,10 @@ class ISummaryView(interface.Interface):
     """Marker interface"""
     def test(a, b, c):
         """."""
-    def formatItem(item):
+    def getContentFilter(contentFilter):
         """."""
-
+    def infosFor(it):
+        """."""
 
 class SummaryView(BrowserView):
     """MY view doc"""
@@ -38,14 +39,15 @@ class SummaryView(BrowserView):
         else:
             return c
 
-    def getRefValuesFailSafe(self, refValues, field, default=None):
+    def getContentFilter(self, contentFilter):
+        sort_on = self.request.get('sort_on', contentFilter.get('sort_on', 'Authors'))
+        contentFilter['sort_on'] = sort_on
+        return contentFilter
 
-        try:
-            return refValues.get(field)
-        except TypeError:
-            return default
-
-    def infosFor(self, item):
+    def infosFor(self, it):
+        item = it
+        if 'brain' in it.__class__.__name__:
+            item = it.getObject()
         authors = [dict(e) for e in item.getAuthors()]
         for e in authors:
             for k in ['firstname', 'lastname', 'middlename', 'homepage']:
@@ -59,7 +61,7 @@ class SummaryView(BrowserView):
             if e['homepage']:
                 author = '<a href="%s">%s</a>' % (
                     e['homepage'],
-                    author, 
+                    author,
                 )
             authors_links.append(author)
         title = item.title_or_id()
@@ -72,11 +74,5 @@ class SummaryView(BrowserView):
         }
         return  data
 
-    def formatItem(self, item):
-        it = item
-        if 'brain' in item.__class__.__name__:
-            it = item.getObject()
-        infos = self.infosFor(it)
-        return infos
 # vim:set et sts=4 ts=4 tw=80:
 

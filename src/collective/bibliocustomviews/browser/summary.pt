@@ -1,3 +1,4 @@
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
@@ -62,7 +63,8 @@
         </div>
 
         <metal:listingmacro define-macro="listing">
-        <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|nothing;
+          <tal:foldercontents define="contentFilter contentFilter|request/contentFilter|python:{};
+                            contentFilter python:view.getContentFilter(contentFilter);
                             limit_display limit_display|request/limit_display|nothing;
                             more_url more_url|request/more_url|string:folder_contents;
                             folderContents python:here.portal_type=='Topic' and here.queryCatalog(contentFilter, batch=True) or here.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
@@ -71,57 +73,52 @@
                             folderContents python: (over_limit and folderContents[:limit_display]) or folderContents;
                             batch folderContents">
         <tal:listing condition="folderContents">
-
           <ul>
-            <tal:block tal:repeat="item folderContents">
+            <tal:block tal:repeat="item batch">
               <li>
                 <div class="tileItem visualIEFloatFix vevent"
-                     tal:define="item_url item/getURL|item/absolute_url;
-                                       item_id item/getId|item/id;
-                                       item_title_or_id item/pretty_title_or_id;
-                                       item_description item/Description;
-                                       item_type item/portal_type;
-                                       item_type_title item/Type;
-                                       item_type_class python: 'contenttype-' + normalizeString(item_type);
-                                       item_modified item/ModificationDate;
-                                       item_created item/CreationDate;
-                                       item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
-                                       item_wf_state_class python:'state-' + normalizeString(item_wf_state);
-                                       item_creator item/Creator;
-                                       item_start item/start/ISO|item/StartDate|nothing;
-                                       item_end item/end/ISO|item/EndDate|nothing;
-                                       item_object item/getObject;
-                                   "
-                     tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
-
-                    <a href="#"
-                       tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
-                        <img src="" alt=""
-                             tal:condition="exists:item_object/image_thumb"
-                             tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
-                    </a>
-
-                    <p metal:define-macro="listitem"
-                        tal:define="infos python:view.formatItem(item)">
+                  tal:define="item_url item/getURL|item/absolute_url;
+                  item_id item/getId|item/id;
+                  item_title_or_id item/pretty_title_or_id;
+                  item_description item/Description;
+                  item_type item/portal_type;
+                  item_type_title item/Type;
+                  item_type_class python: 'contenttype-' + normalizeString(item_type);
+                  item_modified item/ModificationDate;
+                  item_created item/CreationDate;
+                  item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
+                  item_wf_state_class python:'state-' + normalizeString(item_wf_state);
+                  item_creator item/Creator;
+                  item_start item/start/ISO|item/StartDate|nothing;
+                  item_end item/end/ISO|item/EndDate|nothing;
+                  item_object item/getObject;
+                  infos python:view.infosFor(item_object)"
+                  tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+                  <a href="#"
+                    tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
+                    <img src="" alt=""
+                      tal:condition="exists:item_object/image_thumb"
+                      tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
+                  </a>
+                  <p metal:define-macro="listitem">
+                    <tal:block tal:repeat="i infos/authors_links">
+                      <span class="ref-authors" tal:content="structure i"/>
+                    </tal:block>
+                    <span class="ref-title">
+                    ,&nbsp;
                       <a href="#"
                         class="summary url"
-                        tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
-                        <span class="ref-title" tal:content="infos/title"/>
-                      </a>
-                      <tal:block tal:repeat="i infos/authors_links">
-                        ,&nbsp;<span class="ref-authors" tal:content="structure i"/>
-                      </tal:block>
-                      ,&nbsp;<span class="ref-year" tal:content="infos/publication_year"/>
-                    </p>
-                    <div class="visualClear"><!-- --></div>
-                      <div class="documentByLine" 
-                        tal:condition="python:False and False and False and site_properties.allowAnonymousViewAbout or not isAnon">
-                      </div> 
-
-                  </div>
-                </li>
+                        tal:content="infos/title"
+                        tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);"> </a>
+                    </span>
+                    ,&nbsp;
+                    <span class="ref-year" tal:content="infos/publication_year"/>
+                  </p>
+                  <div class="visualClear"><!-- --></div>
+                </div>
+              </li>
             </tal:block>
-            <ul>
+          </ul>
 
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
