@@ -5,6 +5,8 @@ __docformat__ = 'restructuredtext en'
 
 from zope import component, interface
 from zope.component import getAdapter, getMultiAdapter, queryMultiAdapter, getUtility
+from Products.CMFPlone.PloneBatch import Batch
+from Products.ATContentTypes.interface import IATTopic
 
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -23,6 +25,8 @@ class ISummaryView(interface.Interface):
         """."""
     def infosFor(it):
         """."""
+    def getFolderContents(contentFilter=None, batch=False,b_size=100,full_objects=False):
+        """."""
 
 class SummaryView(BrowserView):
     """MY view doc"""
@@ -38,6 +42,44 @@ class SummaryView(BrowserView):
             return b
         else:
             return c
+
+    def getFolderContents(self, contentFilter=None, batch=False,b_size=100,full_objects=False):
+        context = self.context
+        mtool = context.portal_membership
+        cur_path = '/'.join(context.getPhysicalPath())
+        path = {}
+        if not contentFilter:
+            contentFilter = {}
+        else:
+            contentFilter = dict(contentFilter)
+        if not contentFilter.get('sort_on', None):
+            contentFilter['sort_on'] = 'getObjPositionInParent'
+        if contentFilter.get('path', None) is None:
+            path['query'] = cur_path
+            path['depth'] = 1
+            contentFilter['path'] = path
+        show_inactive = mtool.checkPermission('Access inactive portal content', context)
+        # Provide batching hints to the catalog
+        b_start = int(context.REQUEST.get('b_start', 0))
+        contentFilter['b_start'] = b_start
+        if batch:
+            contentFilter['b_size'] = b_size  
+        # Evaluate in catalog context because 
+        # some containers override queryCatalog
+        # with their own unrelated method (Topics)
+        method = context.portal_catalog.queryCatalog
+        if IATTopic.providedBy(self.context):
+            method = self.context.queryCatalog
+        contents = list(method(
+            contentFilter, 
+            show_all=1, 
+            show_inactive=show_inactive,))
+        if full_objects:
+            contents = [b.getObject() for b in contents]
+        if batch:
+            batch = Batch(contents, b_size, b_start, orphan=0)
+            return batch
+        return contents 
 
     def getContentFilter(self, contentFilter):
         sort_on = self.request.get('sort_on', contentFilter.get('sort_on', 'Authors'))
