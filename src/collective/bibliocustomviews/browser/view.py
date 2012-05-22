@@ -61,9 +61,6 @@ class SummaryView(BrowserView):
         show_inactive = mtool.checkPermission('Access inactive portal content', context)
         # Provide batching hints to the catalog
         b_start = int(context.REQUEST.get('b_start', 0))
-        contentFilter['b_start'] = b_start
-        if batch:
-            contentFilter['b_size'] = b_size  
         # Evaluate in catalog context because 
         # some containers override queryCatalog
         # with their own unrelated method (Topics)
@@ -76,6 +73,10 @@ class SummaryView(BrowserView):
             show_inactive=show_inactive,))
         if full_objects:
             contents = [b.getObject() for b in contents]
+        # sort by author and year
+        def comparecustom(a):
+            return '%s___%s' % (a.Authors, a.Title) 
+        contents.sort(key=comparecustom)
         if batch:
             batch = Batch(contents, b_size, b_start, orphan=0)
             return batch
