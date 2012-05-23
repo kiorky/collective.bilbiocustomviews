@@ -114,6 +114,7 @@ class SummaryView(BrowserView):
             'authors_links': authors_links,
             'title': title,
             'publication_year': item.getPublication_year(),
+            'source': item.Source(),
         }
         return  data
 

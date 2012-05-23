@@ -104,6 +104,9 @@
                     <tal:block tal:repeat="i infos/authors_links">
                       <span class="ref-authors" tal:content="structure i"/>
                     </tal:block>
+                    ,&nbsp;
+                    <span class="ref-year" 
+                      tal:content="string:(${infos/publication_year})"/>
                     <span class="ref-title">
                     ,&nbsp;
                       <a href="#"
@@ -111,8 +114,11 @@
                         tal:content="infos/title"
                         tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);"> </a>
                     </span>
-                    ,&nbsp;
-                    <span class="ref-year" tal:content="infos/publication_year"/>
+                    <tal:block tal:condition="infos/source"> 
+                      ,&nbsp;
+                      <span class="ref-source" 
+                        tal:content="infos/source"/> 
+                    </tal:block>
                   </p>
                   <div class="visualClear"><!-- --></div>
                 </div>
