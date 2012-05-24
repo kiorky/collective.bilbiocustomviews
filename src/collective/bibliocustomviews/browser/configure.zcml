@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="collective.bibliocustomviews">
 
@@ -33,20 +34,60 @@
       directory="resources"
       layer="collective.bibliocustomviews.interfaces.ILayer"
     />
-
-
-
+  <browser:page
+      name="bibliocv_macros"
+      for="*"
+      class=".view.BibliocvMacros"
+      template="macros.pt"
+      permission="zope.Public"
+      allowed_interface=".view.IBibliocvMacros"
+      layer="collective.bibliocustomviews.interfaces.ILayer"
+    />
   <browser:page
       name="biblio_summary_view"
       menu="plone_displayviews"
       title="Bibliographic summary view"
-      for="Products.CMFBibliographyAT.interface.content.IBibliographyFolder"
       class=".view.SummaryView"
       template="summary.pt"
       permission="zope.Public"
+      for="collective.bibliocustomviews.interfaces.ISummaryViewEnabled"
       allowed_interface=".view.ISummaryView"
       layer="collective.bibliocustomviews.interfaces.ILayer"
-      /> 
+    />
+  <browser:page
+      name="biblio_datatable_view"
+      menu="plone_displayviews"
+      title="Bibliographic datatable view"
+      for="collective.bibliocustomviews.interfaces.IDatatableViewEnabled"
+      class=".view.Datatable"
+      template="datatable.pt"
+      permission="zope.Public"
+      allowed_interface=".view.IDatatable"
+      layer="collective.bibliocustomviews.interfaces.ILayer"
+    /> 
+  <browser:page
+      name="biblio_search_view"
+      menu="plone_displayviews"
+      title="Bibliographic search view"
+      for="collective.bibliocustomviews.interfaces.ISearchViewEnabled"
+      class=".view.Search"
+      template="search.pt"
+      permission="zope.Public"
+      allowed_interface=".view.ISearch"
+      layer="collective.bibliocustomviews.interfaces.ILayer"
 
+    />  
+  <five:implements
+      class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
+      interface="collective.bibliocustomviews.interfaces.IDatatableViewEnabled"/>   
+  <five:implements
+      class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>  
+  <five:implements
+      class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
+      interface="collective.bibliocustomviews.interfaces.ISummaryViewEnabled"/>  
+  <five:implements
+      class="Products.ATContentTypes.content.topic.ATTopic"
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>   
   <!-- vim:set ft=xml: -->
 </configure>

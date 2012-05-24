@@ -25,4 +25,32 @@ Contributors
 -----------------
 
 
- 
+
+
+Description
+=================
+
+- This package adds some additionnal views to CMFBibliographyAT:
+
+    - a datatable view for bibliographic folders
+    - a summary view for bibliographic folders with everything one lined
+    - a selective export facility on a topic containing biblio documents.
+
+It depends on:
+
+    - CMFBibliographyAT
+    - eea.facetednaviguation
+
+
+To enable selectie export:
+
+    - Make a Topic
+    - Enable faceted naviguation on it
+    - Make the bibliographic search view as default view
+
+
+
+Installation pitfalls
+-----------------------
+- As CMFBibliography reinitialize index values in catalog, you need to install it first, no automatic installation or it.
+

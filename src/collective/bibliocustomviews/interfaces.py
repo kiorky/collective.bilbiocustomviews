@@ -15,3 +15,10 @@ class ILayer(interface.Interface):
     """Marker interface that defines a Zope 3 browser layer.
     """ 
 
+class ISummaryViewEnabled(interface.Interface):
+    """."""
+
+class IDatatableViewEnabled(interface.Interface):
+    """.""" 
+class ISearchViewEnabled(interface.Interface):
+    """."""  

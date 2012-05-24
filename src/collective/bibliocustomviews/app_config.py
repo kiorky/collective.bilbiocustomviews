@@ -17,18 +17,14 @@ EXTENSION_PROFILES = ('collective.bibliocustomviews:default',)
 
 SKIN = 'collective.skin'
 HIDDEN_PRODUCTS = [u'plone.app.openid', u'NuPlone',
-#      u'plone.app.dexterity',
 #      u'Products.CMFBibliographyAT',
-    #with_ploneproduct_dexterity
 
-#    u'plone.app.dexterity',
 #    u'collective.bibliocustomviews.migrations.v1_1',
 #    u'collective.bibliocustomviews.migrations',
 ]
 HIDDEN_PROFILES = [u'plone.app.openid', u'NuPlone',
     u'collective.bibliocustomviews.migrations.v11',
     u'collective.bibliocustomviews.migrations',
-      u'plone.app.dexterity',
       u'Products.CMFBibliographyAT',
 
 ]

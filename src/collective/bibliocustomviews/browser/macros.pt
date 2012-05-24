@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  i18n:domain="plone">
+  <body>
+    <p metal:define-macro="listitem">
+      <span class="ref-authors">
+        <tal:block
+          tal:repeat="i infos/authors_links">
+          <tal:block
+            tal:define="sep python:view.author_repeat_sep(repeat, 'i')"
+            tal:content="structure string:${sep}${i}">
+            author
+          </tal:block>
+        </tal:block>
+      </span>
+      ,&nbsp;
+      <span class="ref-year"
+        tal:content="string:(${infos/publication_year})"/>
+      <span class="ref-title">
+        ,&nbsp;
+        <a href="#"
+          class="summary url"
+          tal:content="infos/title"
+          tal:attributes="href infos/url|nothing;"> </a>
+      </span>
+      <tal:block tal:condition="infos/source">
+        ,&nbsp;
+        <span class="ref-source"
+          tal:content="infos/source"/>
+      </tal:block>
+    </p>
+  </body>
+</html>

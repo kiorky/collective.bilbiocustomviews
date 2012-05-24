@@ -11,10 +11,6 @@
   <include package="Products.Five" file="configure.zcml"/>
   <include package="Products.CMFCore" file="permissions.zcml" />
   <!-- Load the ZCML configuration for the collective.bibliocustomviews package.-->
-  <!--with_ploneproduct_dexterity -->
-  <include package="plone.app.dexterity" file="meta.zcml"/>
-  <!--with_ploneproduct_dexterity -->
-  <include package="plone.app.dexterity" file="configure.zcml"/>
   <!--with_ploneproduct_cmfbibliographyat -->
   <include package="bibliograph.core" file="configure.zcml"/>
   <!--with_ploneproduct_cmfbibliographyat -->

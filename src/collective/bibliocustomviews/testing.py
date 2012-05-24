@@ -66,9 +66,6 @@ class CollectiveBibliocustomviewsLayer(PloneSandboxLayer):
         # ----------------------------------------------------------------------
         # Import all our python modules required by our packages
         # ---------------------------------------------------------------------
-        #with_ploneproduct_dexterity
-        import plone.app.dexterity
-        self.loadZCML('configure.zcml', package=plone.app.dexterity)
         #with_ploneproduct_cmfbibliographyat
         import bibliograph.core
         self.loadZCML('configure.zcml', package=bibliograph.core)

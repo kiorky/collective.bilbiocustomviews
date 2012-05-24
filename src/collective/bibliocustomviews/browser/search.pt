@@ -78,7 +78,7 @@
                           tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
                       </a>
                       <div metal:use-macro="cvmacros/listitem"/>
-                      <div class="visualClear"><!-- --></div>
+                     <div class="visualClear"><!-- --></div>
                     </div>
                   </li>
                 </tal:block>

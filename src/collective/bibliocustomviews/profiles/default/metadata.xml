@@ -4,8 +4,7 @@
   <dependencies>
   <!-- QuickInstalled dependencies -->
       <dependency>profile-collective.bibliocustomviews:qi</dependency>
-  <!-- GenericSetup dependencies -->
-      <dependency>profile-plone.app.dexterity:default</dependency>
-      <dependency>profile-Products.CMFBibliographyAT:default</dependency>
+      <dependency>profile-collective.js.datatables:default</dependency>
+      <dependency>profile-eea.facetednavigation:default</dependency>
  </dependencies>
 </metadata>

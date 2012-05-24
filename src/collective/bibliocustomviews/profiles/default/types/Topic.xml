@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <object name="BibliographyFolder"
    meta_type="Factory-based Type Information with dynamic views"
-   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+   xmlns:i18n="http://xml.zope.org/nadatatable_viewmespaces/i18n">
  <property name="view_methods">
+  <element value="folder_listing"/>
   <element value="folder_summary_view"/>
+  <element value="folder_full_view"/>
   <element value="folder_tabular_view"/>
-  <element value="base_view"/>
-  <element value="biblio_datatable_view"/>
-  <element value="biblio_summary_view"/>
+  <element value="atct_album_view"/>
+  <element value="atct_topic_view"/>
+  <element value="biblio_search_view"/>
  </property>
 </object>
