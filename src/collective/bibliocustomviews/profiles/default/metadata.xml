@@ -4,7 +4,5 @@
   <dependencies>
   <!-- QuickInstalled dependencies -->
       <dependency>profile-collective.bibliocustomviews:qi</dependency>
-      <dependency>profile-collective.js.datatables:default</dependency>
-      <dependency>profile-eea.facetednavigation:default</dependency>
  </dependencies>
 </metadata>

@@ -5,8 +5,10 @@
       meta_type="Filesystem Directory View"
       directory="collective.bibliocustomviews:skins/collective_bibliocustomviews_custom"/>
   <skin-path name="collective.bibliocustomviews" based-on="Sunburst Theme">
+  </skin-path>
+  <skin-path name="*">
     <layer name="collective_bibliocustomviews_custom"
         insert-after="custom"/>
-  </skin-path>
+  </skin-path> 
 
 </object> 

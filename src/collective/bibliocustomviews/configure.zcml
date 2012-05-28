@@ -19,6 +19,7 @@
   <include package="bibliograph.rendering" file="configure.zcml"/>
   <!--with_ploneproduct_cmfbibliographyat -->
   <include package="Products.CMFBibliographyAT" file="configure.zcml"/>
+  <include package="eea.facetednavigation" file="configure.zcml"/>
   <five:registerPackage package="." initialize=".initialize" />
   <!-- activate to customize the dashboard-->
   <!-- <adapter factory=".dashboard.MyPortalDefaultDashboard"/>-->
@@ -28,6 +29,10 @@
   
   <cmf:registerDirectory
        name="collective_bibliocustomviews_custom"/>
+   <!--
+     <adapter name="BiblioSource" factory=".catalog.BiblioSource" />
+    <adapter name="AuthorsList"  factory=".catalog.AuthorsList" />
+    -->
   
 </configure>
 <!-- vim:set ft=xml: -->

@@ -1,7 +1,22 @@
 <?xml version="1.0"?>
 <atcttool>
   <topic_indexes>
-    <index name="Authors" description="" enabled="True" friendlyName="Authors">
+    <index name="getAuthors" 
+        description="Search Authors" enabled="True" 
+        friendlyName="Authors (zct)">
+      <criteria>ATBooleanCriterion</criteria>
+      <criteria>ATCurrentAuthorCriterion</criteria>
+      <criteria>ATDateRangeCriterion</criteria>
+      <criteria>ATFriendlyDateCriteria</criteria>
+      <criteria>ATListCriterion</criteria>
+      <criteria>ATPortalTypeCriterion</criteria>
+      <criteria>ATReferenceCriterion</criteria>
+      <criteria>ATSelectionCriterion</criteria>
+      <criteria>ATSimpleIntCriterion</criteria>
+      <criteria>ATSimpleStringCriterion</criteria>
+    </index>
+    <index name="publication_year" description="" enabled="True"
+        friendlyName="Bibliographic publication year">
       <criteria>ATBooleanCriterion</criteria>
       <criteria>ATCurrentAuthorCriterion</criteria>
       <criteria>ATDateRangeCriterion</criteria>
@@ -14,21 +29,8 @@
       <criteria>ATSimpleStringCriterion</criteria>
     </index>
   </topic_indexes>
-  <index name="publication_year" description="" enabled="True"
-      friendlyName="Bibliographic publication year">
-    <criteria>ATBooleanCriterion</criteria>
-    <criteria>ATCurrentAuthorCriterion</criteria>
-    <criteria>ATDateRangeCriterion</criteria>
-    <criteria>ATFriendlyDateCriteria</criteria>
-    <criteria>ATListCriterion</criteria>
-    <criteria>ATPortalTypeCriterion</criteria>
-    <criteria>ATReferenceCriterion</criteria>
-    <criteria>ATSelectionCriterion</criteria>
-    <criteria>ATSimpleIntCriterion</criteria>
-    <criteria>ATSimpleStringCriterion</criteria>
-  </index>
   <topic_metadata>
-    <metadata name="Authors" description="" enabled="True" friendlyName="Authors"/>
+    <metadata name="getAuthors" description="Authors (zct)" enabled="True" friendlyName="Authors (zct)"/>
     <metadata name="publication_year" description="" enabled="True" friendlyName="Bibligraphic publication year"/>
   </topic_metadata>
 </atcttool>

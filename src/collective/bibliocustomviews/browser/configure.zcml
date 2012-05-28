@@ -3,8 +3,10 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:faceted="http://namespaces.zope.org/faceted"
     i18n_domain="collective.bibliocustomviews">
 
+  <include package="eea.facetednavigation" file="meta.zcml"/>
   <!-- ' collective.bibliocustomviews' Zope 3 browser layer -->
   <interface name="collective.bibliocustomviews-theme"
       interface="collective.bibliocustomviews.interfaces.IThemeSpecific"
@@ -34,6 +36,14 @@
       directory="resources"
       layer="collective.bibliocustomviews.interfaces.ILayer"
     />
+  <browser:page
+      name="bibliocv_utils"
+      for="*"
+      class=".view.BibliocvUtils"
+      permission="zope.Public"
+      allowed_interface=".view.IBibliocvUtils"
+      layer="collective.bibliocustomviews.interfaces.ILayer"
+    /> 
   <browser:page
       name="bibliocv_macros"
       for="*"
@@ -65,18 +75,31 @@
       allowed_interface=".view.IDatatable"
       layer="collective.bibliocustomviews.interfaces.ILayer"
     /> 
-  <browser:page
-      name="biblio_search_view"
-      menu="plone_displayviews"
-      title="Bibliographic search view"
-      for="collective.bibliocustomviews.interfaces.ISearchViewEnabled"
-      class=".view.Search"
-      template="search.pt"
-      permission="zope.Public"
-      allowed_interface=".view.ISearch"
-      layer="collective.bibliocustomviews.interfaces.ILayer"
+  <!--
+    <browser:page
+        name="biblio_search_view"
+        menu="plone_displayviews"
+        title="Bibliographic search view"
+        for="collective.bibliocustomviews.interfaces.ISearchViewEnabled"
+        class=".view.Search"
+        template="search.pt"
+        permission="zope.Public"
+        allowed_interface=".view.ISearch"
+        layer="collective.bibliocustomviews.interfaces.ILayer"
+      />  
+  -->
 
-    />  
+  <browser:viewlet
+      name="biblio.css"
+      for="collective.bibliocustomviews.interfaces.IResourcesEnabled"
+      manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+      template="css.pt"
+      class=".viewlets.CSS"
+      layer="collective.bibliocustomviews.interfaces.ILayer"
+      permission="zope2.View"
+    />
+
+
   <five:implements
       class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
       interface="collective.bibliocustomviews.interfaces.IDatatableViewEnabled"/>   
@@ -89,5 +112,23 @@
   <five:implements
       class="Products.ATContentTypes.content.topic.ATTopic"
       interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>   
+
+  <faceted:view
+      name="faceted-datatable-items"
+      class=".view.Search"
+      template="datatables-items.pt"
+      title="Faceted items preview in a table"
+      permission="zope2.View">
+
+  </faceted:view>
+  <browser:page
+      for="collective.bibliocustomviews.interfaces.ISearchViewEnabled"   
+      name="faceted-datatable-items-export"
+      class=".view.Search"
+      attribute="export"
+      permission="zope2.View">
+  </browser:page>
+
+
   <!-- vim:set ft=xml: -->
 </configure>

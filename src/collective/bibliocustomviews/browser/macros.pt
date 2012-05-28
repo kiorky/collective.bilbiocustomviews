@@ -5,7 +5,109 @@
   lang="en"
   i18n:domain="plone">
   <body>
-    <p metal:define-macro="listitem">
+    <div metal:define-macro="do-listing"
+      >
+      <table
+        tal:define=" normalizeString nocall:context/@@plone/normalizeString;"
+        id="biblio-datatable"
+        class="biblio-datatable">
+          <thead>
+            <tr>
+              <th>Bibliography items
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+        <tal:block tal:repeat="item folderContents">
+          <tr><td>
+            <div class="tileItem visualIEFloatFix vevent"
+              tal:define="item_url item/getURL|item/absolute_url;
+              item_id item/getId|item/id;
+              item_title_or_id item/pretty_title_or_id;
+              item_description item/Description;
+              item_type item/portal_type;
+              item_type_title item/Type;
+              item_type_class python: 'contenttype-' + normalizeString(item_type);
+              item_modified item/ModificationDate;
+              item_created item/CreationDate;
+              infos python:view.infosFor(item)"
+              tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+              <div metal:use-macro="cvmacros/listitem"/>
+             <div class="visualClear"><!-- --></div>
+            </div>
+          </td></tr>
+        </tal:block>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <label> Advanced search with regular exceptions</label>
+            <input type="text" value="" name="filter" class="search_init"/>
+          </td>
+        </tr>
+      </tfoot>
+      </table>
+      <script language="JavaScript">
+      if(typeof(bibliodt_tables) == "undefined") {
+        var bibliodt_asInitVals = new Array();
+        var bibliodt_tables = new Array();
+      }
+      jq(document).ready(function(){
+        var bibliodt_elems = jq("table.biblio-datatable");
+        bibliodt_elems.each(function(i, elem){
+          var jelem = jq(elem);
+          var id = jelem.attr("id");
+          var tfoot = $("tfoot", jelem);
+          bibliodt_asInitVals[id] = new Array();
+          bibliodt_tables[id] = jelem.dataTable(
+          { bJQueryUI: true,
+            aaSorting: [],
+            bAutoWidth: false,
+            bSort: false,
+            bPaginate: true,
+            sPaginationType: "full_numbers",
+            aoColumnDefs: [
+                {aTargets: [0], bSearchable: true, sWidth: "100%" }
+          ]
+          });
+          $("input", tfoot).each(function(i, inp){
+             jinp = jq(inp);
+             bibliodt_asInitVals[id][i] = jinp.val();
+             jinp.keyup(function (e) {
+               einp = jq(e.currentTarget);
+               var key = einp.parents("table").attr("id");
+               bibliodt_tables[key].fnFilter(einp.val(), jq("input", tfoot).index(einp), true, true);
+             });
+             jinp.focus(function (e) {
+               einp = jq(e.currentTarget);
+               if (einp.hasClass("search_init")){
+                 einp.removeClass("search_init");
+                 einp.val("");
+               }
+             });
+             jinp.blur(function (e) {
+                einp = jq(e.currentTarget);
+                if (enip.val() == "") {
+                  $(this).addClass("search_init");
+                  var i = jq("input", einp.parents("tfoot")).index(einp);
+                  var key = einp.parents("table").attr("id");
+                  einp.val(bibliodt_asInitVals[key][i]);
+                }
+             });
+          });
+        });
+      });
+      </script>
+    </div>
+    <p metal:define-macro="listitem"
+      tal:define="editable editable|nothing;">
+      <span tal:condition="editable">
+        <input 
+          name="item.selected:record:list" 
+          type="checkbox" 
+          class="bibliodt-select"
+          tal:attributes="value item/UID|string:"/>
+      </span>
       <span class="ref-authors">
         <tal:block
           tal:repeat="i infos/authors_links">

@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+  xml:lang="en" lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/main_template/macros/master"
+  i18n:domain="eea">
+  <body>
+    <metal:content-core fill-slot="content-core">
+      <metal:block define-macro="content-core">
+        <div tal:define="
+          global props python:container.portal_properties;
+          bib_tool here/portal_bibliography;
+          editable python:True;
+          portal_membership nocall:here/portal_membership;
+          self nocall:here/@@faceted-datatable-items;
+          test python:self.test;
+          cvmacros nocall:here/@@bibliocv_macros;
+          folderContents python:self.arrange(folderContents);">
+          <div tal:define="view nocall:self">
+            <form 
+              method="post"
+              action="@@faceted-datatable-items-export">
+              <div metal:use-macro="cvmacros/do-listing"/>
+              <br/> 
+              <div class="field collapsible">
+                <label class="collapser">Export </label>
+                <div class="collapse" i18n:domain="cmfbibliographyat">
+                  <div class="field">
+                    <label i18n:translate="label_bibliography_export_format">Export Format</label>
+                    <p i18n:translate="help_bibliography_export_format"> Please select the file format for bibliography export.  </p>
+                    <fieldset>
+                      <tal:formats repeat="format here/portal_bibliography/getExportFormats">
+                        <div>
+                          <input class="noborder" type="radio" name="format"
+                            onchange=""
+                            tal:define="value python:format[1];
+                            renderer python: bib_tool.getRenderer(format='%s' % format[0])"
+                            tal:attributes="value value;
+                            id string:bibexport_${value};
+                            checked python:test(value=='bib', 'checked', None);"
+                            id="bibexport_structuredtext" checked="checked" />
+                          <label for="bibexport_structuredtext"
+                            tal:define="value python:format[1]"
+                            tal:content="python: format[0]"
+                            tal:attributes="for
+                            string:bibexport_${value}">dummy format</label>
+                          <br/>
+                        </div>
+                        <div class="formHelp" tal:content="python: format[2]" />
+                      </tal:formats>
+                    </fieldset>
+                    <input type="hidden" readonly name="output_encoding" value="utf-8" />
+                    <div class="field">
+                      <label i18n:translate="label_eol_style">End-Of-Line Style (for text file based exports)</label>
+                      <div class="formHelp" i18n:translate="description_eol_style">
+                        MS-DOS/Windows and UniX operating systems use a different ASCII sequence to indicate a line break.
+                        Depending on your favourite operating system, select your preferred end-of-line style here.
+                      </div>
+                      <input class="noborder" type="radio" value="1" name="eol_style:int" id="eol_style_on" />
+                      <label for="eol_style_on" i18n:translate="label_eol_style_msdos">Use MS-DOS / Windows end-of-line style (CR+LF)</label> <br />
+                      <input class="noborder" type="radio" name="eol_style:int" id="eol_style_off" value="0" checked="checked" />
+                      <label for="eol_style_off" i18n:translate="label_eol_style_unix">Use UniX end-of-line style (LF only)</label>
+                    </div>
+                  </div>
+                  <div class="formControls">
+                    <input class="context" type="submit" name="submit" value="Export" i18n:attributes="value"/>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <script type="text/javascript">
+            jQuery(function($){
+              $('.field.collapsible').do_search_collapse();
+            });
+          </script>
+          <div class="eea-preview-items">
+            <div class="listingBar" style="display: none"></div>
+          </div>
+        </div>
+      </metal:block>
+    </metal:content-core>
+  </body>
+</html> 

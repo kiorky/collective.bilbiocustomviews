@@ -54,3 +54,5 @@ Installation pitfalls
 -----------------------
 - As CMFBibliography reinitialize index values in catalog, you need to install it first, no automatic installation or it.
 
+- jqueryi default profile switch off its css when rexecuted, You also need to install datatables, jqueryui & facetednaviguation first
+ 

@@ -1,0 +1,12 @@
+.biblio-datatable  .DataTables_sort_wrapper {
+  display:none;
+} 
+.dataTables_paginate .fg-button {
+  margin-left: 2px; 
+  padding-left:5px;
+  padding-right:5px;
+} 
+
+#content .dataTables_paginate a{
+ color: #fff !important;
+}
