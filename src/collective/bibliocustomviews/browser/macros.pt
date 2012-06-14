@@ -87,7 +87,7 @@
              });
              jinp.blur(function (e) {
                 einp = jq(e.currentTarget);
-                if (enip.val() == "") {
+                if (einp.val() == "") {
                   $(this).addClass("search_init");
                   var i = jq("input", einp.parents("tfoot")).index(einp);
                   var key = einp.parents("table").attr("id");
