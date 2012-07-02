@@ -49,6 +49,13 @@ class IBibliocvUtils(interface.Interface):
     def getAuthorsList(self):
         """."""
 
+def format_firstname(text):
+    parts = []
+    for part in text.split():
+        if part:
+            parts.append("%s." % part[0].upper())
+    return '-'.join(parts)
+
 class BibliocvUtils(BrowserView):
     interface.implements(IBibliocvUtils)
     ifs = ('lastname', 'firstname', 'middlename', 'homepage')
@@ -191,11 +198,13 @@ class SummaryView(BrowserView):
                     'lastname':   ue[0],
                     'firstname':  ue[1],
                     'middlename': ue[2],
+                    'formatedfname': format_firstname(
+                        (ue[1] + " " + ue[2]).strip()
+                    ),
                     'homepage':   ue[3],
                 }
                 author = ('%(lastname)s '
-                          '%(firstname)s '
-                          '%(middlename)s' % e).strip()
+                          '%(formatedfname)s' % e).strip()
                 if e['homepage']:
                     author = '<a href="%s">%s</a>' % (
                         e['homepage'],
