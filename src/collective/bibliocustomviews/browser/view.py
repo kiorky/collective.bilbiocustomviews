@@ -107,9 +107,9 @@ class SummaryView(BrowserView):
     def author_repeat_sep(self, repeat, key):
         sep = ''
         if self.inmiddle(repeat, 'i'):
-            sep = ',&nbsp;'
+            sep = ', '
         if not self.first(repeat, 'i') and self.last(repeat, 'i'):
-            sep = '&amp;&nbsp;'
+            sep = '&amp; '
         return sep
 
     @ram.cache(_render_contents)

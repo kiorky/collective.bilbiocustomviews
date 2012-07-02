@@ -102,37 +102,21 @@
     <p metal:define-macro="listitem"
       tal:define="editable editable|nothing;">
       <span tal:condition="editable">
-        <input 
-          name="item.selected:record:list" 
-          type="checkbox" 
+        <input
+          name="item.selected:record:list"
+          type="checkbox"
           class="bibliodt-select"
           tal:attributes="value item/UID|string:"/>
       </span>
-      <span class="ref-authors">
-        <tal:block
-          tal:repeat="i infos/authors_links">
-          <tal:block
-            tal:define="sep python:view.author_repeat_sep(repeat, 'i')"
-            tal:content="structure string:${sep}${i}">
-            author
-          </tal:block>
-        </tal:block>
-      </span>
-      ,&nbsp;
-      <span class="ref-year"
-        tal:content="string:(${infos/publication_year})"/>
+      <span class="ref-authors"><tal:block tal:repeat="i infos/authors_links"><tal:block tal:define="sep python:view.author_repeat_sep(repeat, 'i')" tal:content="structure string:${sep}${i}">author</tal:block></tal:block></span>
+      ,&nbsp;<span class="ref-year"
+        tal:content="string:${infos/publication_year}"/>
       <span class="ref-title">
-        ,&nbsp;
-        <a href="#"
+        ,&nbsp;<a href="#"
           class="summary url"
           tal:content="infos/title"
           tal:attributes="href infos/url|nothing;"> </a>
-      </span>
-      <tal:block tal:condition="infos/source">
-        ,&nbsp;
-        <span class="ref-source"
-          tal:content="infos/source"/>
-      </tal:block>
+      </span><tal:block tal:condition="infos/source">&nbsp;<span class="ref-source" tal:content="infos/source"/></tal:block>
     </p>
   </body>
 </html>
