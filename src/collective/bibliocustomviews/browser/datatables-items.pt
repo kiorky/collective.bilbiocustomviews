@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<html xmlns="http://www.w3.org/1999/xhtml"
   xml:lang="en" lang="en"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
@@ -18,11 +18,11 @@
           cvmacros nocall:here/@@bibliocv_macros;
           folderContents python:self.arrange(folderContents);">
           <div tal:define="view nocall:self">
-            <form 
+            <form
               method="post"
               action="@@faceted-datatable-items-export">
               <div metal:use-macro="cvmacros/do-listing"/>
-              <br/> 
+              <br/>
               <div class="field collapsible">
                 <label class="collapser">Export </label>
                 <div class="collapse" i18n:domain="cmfbibliographyat">
@@ -82,4 +82,4 @@
       </metal:block>
     </metal:content-core>
   </body>
-</html> 
+</html>

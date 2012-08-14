@@ -109,7 +109,7 @@ class SummaryView(BrowserView):
         if self.inmiddle(repeat, 'i'):
             sep = ', '
         if not self.first(repeat, 'i') and self.last(repeat, 'i'):
-            sep = '&amp; '
+            sep = ' &amp; '
         return sep
 
     @ram.cache(_render_contents)
