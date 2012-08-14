@@ -110,7 +110,7 @@
       </span><span 
       class="ref-authors"><tal:block 
       tal:repeat="i infos/authors_links"><tal:block 
-      tal:define="sep python:view.author_repeat_sep(repeat, 'i')" tal:content="structure string:${sep}${i}">author</tal:block></tal:block></span> ,&nbsp;<span 
+      tal:define="sep python:view.author_repeat_sep(repeat, 'i')" tal:content="structure string:${sep}${i}">author</tal:block></tal:block></span>,&nbsp;<span 
       class="ref-year"
       tal:content="string:${infos/publication_year}"/><span
       class="ref-title">.&nbsp;<a 
