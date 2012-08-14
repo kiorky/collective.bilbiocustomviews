@@ -114,7 +114,7 @@
       interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>   
 
   <faceted:view
-      name="faceted-datatable-items"
+      name="faceted-biblio-datatable-items"
       class=".view.Search"
       template="datatables-items.pt"
       title="Faceted bibliographic items preview in a table"
