@@ -13,7 +13,7 @@
           bib_tool here/portal_bibliography;
           editable python:True;
           portal_membership nocall:here/portal_membership;
-          self nocall:here/@@faceted-datatable-items;
+          self nocall:here/@@faceted-biblio-datatable-items;
           test python:self.test;
           cvmacros nocall:here/@@bibliocv_macros;
           folderContents python:self.arrange(folderContents);">
