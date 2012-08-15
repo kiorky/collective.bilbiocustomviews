@@ -13,9 +13,11 @@
         class="biblio-datatable">
           <thead>
             <tr>
-              <th>Bibliography items
-              </th>
-            </tr>
+              <td>
+                
+              </td>
+            </tr> 
+            <tr><th>Bibliography items</th></tr>
           </thead>
           <tbody>
         <tal:block tal:repeat="item folderContents">
@@ -41,6 +43,10 @@
       <tfoot>
         <tr>
           <td>
+            <input type="button" 
+              onClick="javascript:biblio_toggle_selected_items();return false;"
+              name="selectall"
+              value="(De)Select all visible items"/> 
             <label> Advanced search with regular exceptions</label>
             <input type="text" value="" name="filter" class="search_init"/>
           </td>
@@ -70,13 +76,13 @@
                 {aTargets: [0], bSearchable: true, sWidth: "100%" }
           ]
           });
-          $("input", tfoot).each(function(i, inp){
+          $("input[type=text]", tfoot).each(function(i, inp){
              jinp = jq(inp);
              bibliodt_asInitVals[id][i] = jinp.val();
              jinp.keyup(function (e) {
                einp = jq(e.currentTarget);
                var key = einp.parents("table").attr("id");
-               bibliodt_tables[key].fnFilter(einp.val(), jq("input", tfoot).index(einp), true, true);
+               bibliodt_tables[key].fnFilter(einp.val(), jq("input[type=text]", tfoot).index(einp), true, true);
              });
              jinp.focus(function (e) {
                einp = jq(e.currentTarget);
@@ -89,7 +95,7 @@
                 einp = jq(e.currentTarget);
                 if (einp.val() == "") {
                   $(this).addClass("search_init");
-                  var i = jq("input", einp.parents("tfoot")).index(einp);
+                  var i = jq("input[type=text]", einp.parents("tfoot")).index(einp);
                   var key = einp.parents("table").attr("id");
                   einp.val(bibliodt_asInitVals[key][i]);
                 }
@@ -97,6 +103,12 @@
           });
         });
       });
+      function biblio_toggle_selected_items() {
+        $('input[name=item.selected:record:list]').each(
+        function (i, elem){
+          $(elem).attr('checked', !$(elem).attr('checked'));
+        });
+      }
       </script>
     </div>
     <p metal:define-macro="listitem"
