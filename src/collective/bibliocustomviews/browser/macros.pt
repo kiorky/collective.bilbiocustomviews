@@ -119,7 +119,7 @@
           type="checkbox"
           class="bibliodt-select"
           tal:attributes="value item/UID|string:"/>
-      </span><span 
+        </span><metal:block  metal:define-macro="display-reference"><span 
       class="ref-authors"><tal:block 
       tal:repeat="i infos/authors_links"><tal:block 
       tal:define="sep python:view.author_repeat_sep(repeat, 'i')" tal:content="structure string:${sep}${i}">author</tal:block></tal:block></span>,&nbsp;<span 
@@ -131,7 +131,7 @@
         tal:content="infos/title"
         tal:attributes="href infos/url|nothing;"> </a></span><tal:block 
         tal:condition="infos/source">&nbsp;<span 
-        class="ref-source" tal:content="infos/source"/></tal:block>
+          class="ref-source" tal:content="infos/source"/></tal:block></metal:block>
     </p>
   </body>
 </html>

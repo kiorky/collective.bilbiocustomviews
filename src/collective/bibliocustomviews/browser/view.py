@@ -29,7 +29,11 @@ def fifteen_minutes():
     return time() // (15 * 60) 
 
 def _render_details_cachekey(method, self, brain):
-    return (brain.getPath(), fifteen_minutes())
+    try:
+        path = brain.getPath()
+    except AttributeError,e:
+        path = '/'.join(brain.getPhysicalPath())
+    return (path, fifteen_minutes())
 
 def _render_contents(method, self, *args, **kwargs):
     hs = fifteen_minutes()
@@ -186,12 +190,17 @@ class SummaryView(BrowserView):
                 ret = True
         return ret
 
+
     @ram.cache(_render_details_cachekey)
     def infosFor(self, it):
         #logging.getLogger('foo').error('info hitted')
         authors_links = []
-        #if 'brain' in it.__class__.__name__:
-        #    item = it.getObject()
+        if ((not 'brain' in it.__class__.__name__) 
+            and IBibliographicItem.providedBy(it)):
+            catalog = getToolByName(it, 'portal_catalog')
+            it = catalog.search(dict(
+                path={'depth':0, 'query':'/'.join(it.getPhysicalPath())}
+            ))[0]
         if it.bAuthorsList:
             for ue in it.bAuthorsList:
                 e = {
