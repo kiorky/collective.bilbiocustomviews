@@ -1,3 +1,5 @@
-<link 
-rel="stylesheet" type="text/css" media="screen" 
-tal:attributes="href string:${here/portal_url}/++resource++collective.bibliocustomviews/bibliodt.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="++resource++jquery.datatables/extras/TableTools/media/css/TableTools.css"/>
+<script type="text/javascript" src="++resource++jquery.datatables/extras/TableTools/media/js/ZeroClipboard.js"></script>
+<script type="text/javascript" src="++resource++jquery.datatables/extras/TableTools/media/js/TableTools.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" 
+  tal:attributes="href string:${here/portal_url}/++resource++collective.bibliocustomviews/bibliodt.css" /> 

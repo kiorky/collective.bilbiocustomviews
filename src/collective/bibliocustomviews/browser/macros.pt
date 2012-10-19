@@ -68,8 +68,10 @@
           bibliodt_tables[id] = jelem.dataTable(
           { bJQueryUI: true,
             aaSorting: [],
+            sDom: 'lpfrti<"clear">T',
             bAutoWidth: false,
             bSort: false,
+            oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"}, 
             bPaginate: true,
             sPaginationType: "full_numbers",
             aoColumnDefs: [

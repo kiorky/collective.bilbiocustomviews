@@ -9,5 +9,11 @@
 } 
 
 #content .dataTables_paginate a{
- color: #fff !important;
+  color: #fff !important;
+}
+
+
+#biblio-datatable_wrapper a.DTTT_button:hover,
+#biblio-datatable_wrapper a.DTTT_button {
+  color:black !important;
 }
