@@ -43,7 +43,7 @@
       permission="zope.Public"
       allowed_interface=".view.IBibliocvUtils"
       layer="collective.bibliocustomviews.interfaces.ILayer"
-    /> 
+    />
   <browser:page
       name="bibliocv_macros"
       for="*"
@@ -74,7 +74,7 @@
       permission="zope.Public"
       allowed_interface=".view.IDatatable"
       layer="collective.bibliocustomviews.interfaces.ILayer"
-    /> 
+    />
   <!--
     <browser:page
         name="biblio_search_view"
@@ -86,7 +86,7 @@
         permission="zope.Public"
         allowed_interface=".view.ISearch"
         layer="collective.bibliocustomviews.interfaces.ILayer"
-      />  
+      />
   -->
 
   <browser:viewlet
@@ -102,16 +102,16 @@
 
   <five:implements
       class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
-      interface="collective.bibliocustomviews.interfaces.IDatatableViewEnabled"/>   
+      interface="collective.bibliocustomviews.interfaces.IDatatableViewEnabled"/>
   <five:implements
       class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
-      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>  
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
   <five:implements
       class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
-      interface="collective.bibliocustomviews.interfaces.ISummaryViewEnabled"/>  
+      interface="collective.bibliocustomviews.interfaces.ISummaryViewEnabled"/>
   <five:implements
       class="Products.ATContentTypes.content.topic.ATTopic"
-      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>   
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
 
   <faceted:view
       name="faceted-biblio-datatable-items"
@@ -121,7 +121,7 @@
       permission="zope2.View">
   </faceted:view>
   <browser:page
-      for="collective.bibliocustomviews.interfaces.ISearchViewEnabled"   
+      for="collective.bibliocustomviews.interfaces.ISearchViewEnabled"
       name="faceted-datatable-items-export"
       class=".view.Search"
       attribute="export"
