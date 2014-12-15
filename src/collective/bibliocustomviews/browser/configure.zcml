@@ -8,6 +8,9 @@
 
   <include package="eea.facetednavigation" file="meta.zcml"/>
   <!-- ' collective.bibliocustomviews' Zope 3 browser layer -->
+
+  <include package="plone.app.z3cform" />
+  <include package="plone.app.contentmenu" />
   <interface name="collective.bibliocustomviews-theme"
       interface="collective.bibliocustomviews.interfaces.IThemeSpecific"
       type="zope.publisher.interfaces.browser.IBrowserSkinType"

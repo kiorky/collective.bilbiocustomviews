@@ -14,9 +14,9 @@
           <thead>
             <tr>
               <td>
-                
+
               </td>
-            </tr> 
+            </tr>
             <tr><th>Bibliography items</th></tr>
           </thead>
           <tbody>
@@ -43,10 +43,15 @@
       <tfoot>
         <tr>
           <td>
-            <input type="button" 
+            <input type="button"
               onClick="javascript:biblio_toggle_selected_items();return false;"
               name="selectall"
-              value="(De)Select all visible items"/> 
+              value="(De)Select all visible items"/>
+            <input type="button"
+              onClick="javascript:biblio_toggle_all_selected_items();return false;"
+              name="selectall"
+              value="(De)Select all visible and invisible items"/>
+
             <label> Advanced search with regular exceptions</label>
             <input type="text" value="" name="filter" class="search_init"/>
           </td>
@@ -55,8 +60,9 @@
       </table>
       <script language="JavaScript">
       if(typeof(bibliodt_tables) == "undefined") {
-        var bibliodt_asInitVals = new Array();
-        var bibliodt_tables = new Array();
+        bibliodt_asInitVals = new Array();
+        bibliodt_tables = new Array();
+        bibliodt_datatables = new Array();
       }
       jq(document).ready(function(){
         var bibliodt_elems = jq("table.biblio-datatable");
@@ -65,19 +71,20 @@
           var id = jelem.attr("id");
           var tfoot = $("tfoot", jelem);
           bibliodt_asInitVals[id] = new Array();
-          bibliodt_tables[id] = jelem.dataTable(
-          { bJQueryUI: true,
-            aaSorting: [],
-            sDom: 'lpfrti<"clear">T',
-            bAutoWidth: false,
-            bSort: false,
-            oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"}, 
-            bPaginate: true,
-            sPaginationType: "full_numbers",
-            aoColumnDefs: [
-                {aTargets: [0], bSearchable: true, sWidth: "100%" }
+          bibliodt_datatables[id] = jelem.DataTable(
+          { jQueryUI: true,
+            order: [],
+            dom: 'lpfrti<"clear">T',
+            autoWidth: false,
+            ordering: false,
+            oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"},
+            paging: true,
+            pagingType: "full_numbers",
+            columnDefs: [
+                {targets: [0], searchable: true, width: "100%" }
           ]
           });
+          bibliodt_tables[id] = jelem;
           $("input[type=text]", tfoot).each(function(i, inp){
              jinp = jq(inp);
              bibliodt_asInitVals[id][i] = jinp.val();
@@ -105,11 +112,31 @@
           });
         });
       });
-      function biblio_toggle_selected_items() {
-        $('input[name=item.selected:record:list]').each(
-        function (i, elem){
+      function biblio_toggle_input(elem, done) {
+        if (!done) {
           $(elem).attr('checked', !$(elem).attr('checked'));
+        }
+        var val = $(elem).val();
+        var values = $('#bibselectedstuff');
+        var txtinput = $('<input id="'+val+'" value="'+val+'" name="item.selected:record:list" type="hidden"/>');
+        if(!$(elem).attr('checked')) {
+          $('#'+val, values).remove();
+        } else {
+          values.append(txtinput);
+        }
+      }
+      $('input[name="item.pselected:record:list"]').on('click', function() {
+        biblio_toggle_input(this, true);
+      });
+      function biblio_toggle_selected_items() {
+        $('input[name="item.pselected:record:list"]').each(
+        function (i, elem){
+          biblio_toggle_input(elem);
         });
+      }
+      function biblio_toggle_all_selected_items() {
+        bibliodt_datatables['biblio-datatable'].$('input', {filter:'applied'}).each(
+            function(ix, i) {biblio_toggle_input(i)});
       }
       </script>
     </div>
@@ -117,22 +144,22 @@
       tal:define="editable editable|nothing;">
       <span tal:condition="editable">
         <input
-          name="item.selected:record:list"
+          name="item.pselected:record:list"
           type="checkbox"
           class="bibliodt-select"
           tal:attributes="value item/UID|string:"/>
-        </span><metal:block  metal:define-macro="display-reference"><span 
-      class="ref-authors"><tal:block 
-      tal:repeat="i infos/authors_links"><tal:block 
-      tal:define="sep python:view.author_repeat_sep(repeat, 'i')" tal:content="structure string:${sep}${i}">author</tal:block></tal:block></span>,&nbsp;<span 
+        </span><metal:block  metal:define-macro="display-reference"><span
+      class="ref-authors"><tal:block
+      tal:repeat="i infos/authors_links"><tal:block
+      tal:define="sep python:view.author_repeat_sep(repeat, 'i')" tal:content="structure string:${sep}${i}">author</tal:block></tal:block></span>,&nbsp;<span
       class="ref-year"
       tal:content="string:${infos/publication_year}"/><span
-      class="ref-title">.&nbsp;<a 
+      class="ref-title">.&nbsp;<a
         href="#"
         class="summary url"
         tal:content="infos/title"
-        tal:attributes="href infos/url|nothing;"> </a></span><tal:block 
-        tal:condition="infos/source">&nbsp;<span 
+        tal:attributes="href infos/url|nothing;"> </a></span><tal:block
+        tal:condition="infos/source">&nbsp;<span
           class="ref-source" tal:content="infos/source"/></tal:block></metal:block>
     </p>
   </body>

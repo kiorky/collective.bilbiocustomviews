@@ -1,12 +1,12 @@
 #content .faceted-resultsperpage-widget,
 .biblio-datatable  .DataTables_sort_wrapper {
   display:none;
-} 
+}
 .dataTables_paginate .fg-button {
-  margin-left: 2px; 
+  margin-left: 2px;
   padding-left:5px;
   padding-right:5px;
-} 
+}
 
 #content .dataTables_paginate a{
   color: #fff !important;
@@ -16,4 +16,15 @@
 #biblio-datatable_wrapper a.DTTT_button:hover,
 #biblio-datatable_wrapper a.DTTT_button {
   color:black !important;
+}
+#biblio-datatable tbody th, #biblio-datatable tbody td {
+  padding:2px 10px;
+}
+
+#content #biblio-datatable p {
+  margin-bottom: 5px;
+}
+
+#content #biblio-datatable tr.odd {
+  background: #E2E4FF;
 }

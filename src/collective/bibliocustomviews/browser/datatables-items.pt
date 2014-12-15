@@ -23,6 +23,7 @@
               action="@@faceted-datatable-items-export">
               <div metal:use-macro="cvmacros/do-listing"/>
               <br/>
+              <div id="bibselectedstuff"/>
               <div class="field collapsible">
                 <label class="collapser">Export </label>
                 <div class="collapse" i18n:domain="cmfbibliographyat">
