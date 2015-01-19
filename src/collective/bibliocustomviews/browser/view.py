@@ -217,12 +217,15 @@ class SummaryView(BibliocvUtils):
     def infosFor(self, it, firstfull=False, invert=False):
         #logging.getLogger('foo').error('info hitted')
         authors_links = []
-        if ((not 'brain' in it.__class__.__name__) 
-            and IBibliographicItem.providedBy(it)):
-            catalog = getToolByName(it, 'portal_catalog')
+        catalog = getToolByName(it, 'portal_catalog')
+        if (
+            ('brain' not in it.__class__.__name__)
+            and IBibliographicItem.providedBy(it)
+        ):
             it = catalog.search(dict(
-                path={'depth':0, 'query':'/'.join(it.getPhysicalPath())}
+                path={'depth': 0, 'query': '/'.join(it.getPhysicalPath())}
             ))[0]
+        path =  it.getPath()
         authors = []
         #if 'brain' in it.__class__.__name__:
         #    item = it.getObject()
@@ -250,7 +253,13 @@ class SummaryView(BibliocvUtils):
                 authors_links.append(author)
                 authors.append(e)
         title = it.Title
+        related = catalog.uniqueValuesFor('getRawRelatedItems')
+        has_relitems = bool(
+            len([a for a in catalog.search(dict(
+                path={'depth': 0, 'query': path},
+                getRawRelatedItems=related))]))
         data = {
+            'has_relitems': has_relitems,
             'authors': authors,
             'authors_links': authors_links,
             'title': title.strip(),
@@ -258,7 +267,8 @@ class SummaryView(BibliocvUtils):
             'source': it.bSource,
             'url': it.getURL(),
         }
-        return  data
+        return data
+
 
 class IBibliocvMacros(ISummaryView):
     """."""

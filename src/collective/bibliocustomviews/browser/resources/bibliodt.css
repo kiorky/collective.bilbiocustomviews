@@ -1,12 +1,17 @@
-#content .faceted-resultsperpage-widget,
+#content .faceted-resultsperpage-widget {
+  display:none;
+}
+/*
 .biblio-datatable  .DataTables_sort_wrapper {
   display:none;
 }
+*/
 .dataTables_paginate .fg-button {
   margin-left: 2px;
   padding-left:5px;
   padding-right:5px;
 }
+
 
 #content .dataTables_paginate a{
   color: #fff !important;
@@ -25,6 +30,22 @@
   margin-bottom: 5px;
 }
 
+
+#content #biblio-datatable thead td,
+#content #biblio-datatable thead tr {
+  background: transparent;
+  border: none;
+}
+#content #biblio-datatable thead tr th div {
+  color: black;
+} 
+
 #content #biblio-datatable tr.odd {
   background: #E2E4FF;
 }
+
+#content .dt-biblio-main-flags {
+  color: red !important;
+}
+
+

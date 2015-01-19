@@ -17,27 +17,41 @@
 
               </td>
             </tr>
-            <tr><th>Bibliography items</th></tr>
+            <tr>
+              <th>Bibliography items</th>
+              <th>Publication date</th>
+          </tr>
           </thead>
           <tbody>
         <tal:block tal:repeat="item folderContents">
-          <tr><td>
-            <div class="tileItem visualIEFloatFix vevent"
-              tal:define="item_url item/getURL|item/absolute_url;
-              item_id item/getId|item/id;
-              item_title_or_id item/pretty_title_or_id;
-              item_description item/Description;
-              item_type item/portal_type;
-              item_type_title item/Type;
-              item_type_class python: 'contenttype-' + normalizeString(item_type);
-              item_modified item/ModificationDate;
-              item_created item/CreationDate;
-              infos python:view.infosFor(item)"
-              tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
-              <div metal:use-macro="cvmacros/listitem"/>
-             <div class="visualClear"><!-- --></div>
-            </div>
-          </td></tr>
+          <tr
+            tal:define="item_url item/getURL|item/absolute_url;
+            item_id item/getId|item/id;
+            item_title_or_id item/pretty_title_or_id;
+            item_description item/Description;
+            item_type item/portal_type;
+            item_type_title item/Type;
+            item_type_class python: 'contenttype-' + normalizeString(item_type);
+            item_modified item/ModificationDate;
+            item_created item/CreationDate;
+            infos python:view.infosFor(item)"
+            >
+            <td>
+              <div class="tileItem visualIEFloatFix vevent"
+
+                tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+                <div metal:use-macro="cvmacros/listitem"/>
+                <div class="visualClear"><!-- --></div>
+              </div>
+            </td>
+            <td>
+              <div class="tileItem visualIEFloatFix vevent"
+                tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+                <div metal:use-macro="cvmacros/listdate"/>
+                <div class="visualClear"><!-- --></div>
+              </div>
+            </td>
+        </tr>
         </tal:block>
       </tbody>
       <tfoot>
@@ -52,8 +66,10 @@
               name="selectall"
               value="(De)Select all visible and invisible items"/>
 
+            <!-- do not work anymore & useless
             <label> Advanced search with regular exceptions</label>
             <input type="text" value="" name="filter" class="search_init"/>
+            -->
           </td>
         </tr>
       </tfoot>
@@ -76,12 +92,13 @@
             order: [],
             dom: 'lpfrti<"clear">T',
             autoWidth: false,
-            ordering: false,
+            ordering: true,
             oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"},
             paging: true,
             pagingType: "full_numbers",
             columnDefs: [
-                {targets: [0], searchable: true, width: "100%" }
+                {targets: [0], searchable: true, width: "90%" },
+                {targets: [1], searchable: true, width: "10%" }
           ]
           });
           bibliodt_tables[id] = jelem;
@@ -143,6 +160,11 @@
     <p metal:define-macro="listitem"
       tal:define="editable editable|nothing;">
       <span tal:condition="editable">
+        <span class="dt-biblio-main-flags"
+          tal:condition="not:context/portal_membership/isAnonymousUser">
+          <span tal:content="string:t" tal:condition="python:not len(item.Subject)"/>
+          <span tal:content="string:r" tal:condition="not:infos/has_relitems"/>
+        </span>
         <input
           name="item.pselected:record:list"
           type="checkbox"
@@ -161,6 +183,11 @@
         tal:attributes="href infos/url|nothing;"> </a></span><tal:block
         tal:condition="infos/source">&nbsp;<span
           class="ref-source" tal:content="infos/source"/></tal:block></metal:block>
+    </p>
+    <p metal:define-macro="listdate" tal:define="editable editable|nothing;">
+      <metal:block  metal:define-macro="display-reference-date">
+        <span class="ref-year" tal:content="string:${infos/publication_year}"/>
+      </metal:block>
     </p>
   </body>
 </html>
