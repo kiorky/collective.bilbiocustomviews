@@ -249,6 +249,10 @@ class SummaryView(BibliocvUtils):
                         e['homepage'],
                         author,
                     )
+                if author:
+                    if "\\x"  in repr(author[-2:]):
+                        initial = ue[1][0:2]
+                        author = author[:-2] + initial + author[-1:]
                 e['author'] = author
                 authors_links.append(author)
                 authors.append(e)
@@ -258,6 +262,7 @@ class SummaryView(BibliocvUtils):
             len([a for a in catalog.search(dict(
                 path={'depth': 0, 'query': path},
                 getRawRelatedItems=related))]))
+
         data = {
             'has_relitems': has_relitems,
             'authors': authors,
