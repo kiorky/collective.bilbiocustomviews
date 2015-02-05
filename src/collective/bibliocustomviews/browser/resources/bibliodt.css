@@ -36,8 +36,9 @@
   background: transparent;
   border: none;
 }
+#content #biblio-datatable thead tr th div.DataTables_sort_wrapper,
 #content #biblio-datatable thead tr th div {
-  color: black;
+  color: black !important;
 } 
 
 #content #biblio-datatable tr.odd {

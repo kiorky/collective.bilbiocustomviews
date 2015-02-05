@@ -8,7 +8,7 @@
     <div metal:define-macro="do-listing"
       >
       <table
-        tal:define=" normalizeString nocall:context/@@plone/normalizeString;"
+        tal:define="normalizeString nocall:context/@@plone/normalizeString;"
         id="biblio-datatable"
         class="biblio-datatable">
           <thead>
@@ -17,10 +17,14 @@
 
               </td>
             </tr>
-            <tr>
+            <tr tal:condition="python:biblio_mode=='simple'">
+              <th>Items</th>
+              <th>date</th>
+            </tr>
+            <tr tal:condition="python:biblio_mode!='simple'">
               <th>Bibliography items</th>
               <th>Publication date</th>
-          </tr>
+            </tr>
           </thead>
           <tbody>
         <tal:block tal:repeat="item folderContents">
@@ -33,10 +37,27 @@
             item_type_title item/Type;
             item_type_class python: 'contenttype-' + normalizeString(item_type);
             item_modified item/ModificationDate;
-            item_created item/CreationDate;
-            infos python:view.infosFor(item)"
+            item_created item/CreationDate;"
             >
+            <tal:block tal:condition="python:biblio_mode=='simple'">
             <td>
+              <div class="tileItem visualIEFloatFix vevent"
+
+                tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+                <div metal:use-macro="cvmacros/listsimpleitem"/>
+                <div class="visualClear"><!-- --></div>
+              </div>
+            </td>
+            <td>
+              <div class="tileItem visualIEFloatFix vevent"
+                tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+                    <div metal:use-macro="cvmacros/listsimpledate"/>
+                <div class="visualClear"><!-- --></div>
+              </div>
+            </td>
+            </tal:block>
+            <tal:block tal:condition="python:biblio_mode!='simple'">
+            <td tal:define="infos python:view.infosFor(item)|nothing">
               <div class="tileItem visualIEFloatFix vevent"
 
                 tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
@@ -47,15 +68,16 @@
             <td>
               <div class="tileItem visualIEFloatFix vevent"
                 tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
-                <div metal:use-macro="cvmacros/listdate"/>
+                    <div metal:use-macro="cvmacros/listdate"/>
                 <div class="visualClear"><!-- --></div>
               </div>
             </td>
+            </tal:block>
         </tr>
         </tal:block>
       </tbody>
       <tfoot>
-        <tr>
+        <tr tal:condition="python:biblio_mode!='simple'">
           <td>
             <input type="button"
               onClick="javascript:biblio_toggle_selected_items();return false;"
@@ -80,10 +102,10 @@
         bibliodt_tables = new Array();
         bibliodt_datatables = new Array();
       }
-      jq(document).ready(function(){
-        var bibliodt_elems = jq("table.biblio-datatable");
+      jQuery(document).ready(function(){
+        var bibliodt_elems = jQuery("table.biblio-datatable");
         bibliodt_elems.each(function(i, elem){
-          var jelem = jq(elem);
+          var jelem = jQuery(elem);
           var id = jelem.attr("id");
           var tfoot = $("tfoot", jelem);
           bibliodt_asInitVals[id] = new Array();
@@ -103,25 +125,25 @@
           });
           bibliodt_tables[id] = jelem;
           $("input[type=text]", tfoot).each(function(i, inp){
-             jinp = jq(inp);
+             jinp = jQuery(inp);
              bibliodt_asInitVals[id][i] = jinp.val();
              jinp.keyup(function (e) {
-               einp = jq(e.currentTarget);
+               einp = jQuery(e.currentTarget);
                var key = einp.parents("table").attr("id");
-               bibliodt_tables[key].fnFilter(einp.val(), jq("input[type=text]", tfoot).index(einp), true, true);
+               bibliodt_tables[key].fnFilter(einp.val(), jQuery("input[type=text]", tfoot).index(einp), true, true);
              });
              jinp.focus(function (e) {
-               einp = jq(e.currentTarget);
+               einp = jQuery(e.currentTarget);
                if (einp.hasClass("search_init")){
                  einp.removeClass("search_init");
                  einp.val("");
                }
              });
              jinp.blur(function (e) {
-                einp = jq(e.currentTarget);
+                einp = jQuery(e.currentTarget);
                 if (einp.val() == "") {
                   $(this).addClass("search_init");
-                  var i = jq("input[type=text]", einp.parents("tfoot")).index(einp);
+                  var i = jQuery("input[type=text]", einp.parents("tfoot")).index(einp);
                   var key = einp.parents("table").attr("id");
                   einp.val(bibliodt_asInitVals[key][i]);
                 }
@@ -157,6 +179,7 @@
       }
       </script>
     </div>
+    <:------------------------------------------------------------------------------>
     <p metal:define-macro="listitem"
       tal:define="editable editable|nothing;">
       <span tal:condition="editable">
@@ -187,6 +210,22 @@
     <p metal:define-macro="listdate" tal:define="editable editable|nothing;">
       <metal:block  metal:define-macro="display-reference-date">
         <span class="ref-year" tal:content="string:${infos/publication_year}"/>
+      </metal:block>
+    </p>
+    <:------------------------------------------------------------------------------>
+    <p metal:define-macro="listsimpleitem" tal:define="editable editable|nothing;">
+      <span tal:condition="editable">
+        <input tal:condition="nothing" name="item.pselected:record:list" type="checkbox" class="bibliodt-select" tal:attributes="value item/UID|string:"/>
+      </span>
+      <metal:block  metal:define-macro="display-simple-reference">
+        <span class="ref-title">.&nbsp;<a href="#" class="summary url" tal:content="item/Title"
+          tal:attributes="href item/getURL|nothing;"> </a>
+        </span>
+      </metal:block>
+    </p>
+    <p metal:define-macro="listsimpledate" tal:define="editable editable|nothing;">
+      <metal:block  metal:define-macro="display-simple-reference-date">
+        <span class="ref-year" tal:content="python:'{0}'.format(item.modified)[:10]"/>
       </metal:block>
     </p>
   </body>

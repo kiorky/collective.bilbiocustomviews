@@ -78,20 +78,6 @@
       allowed_interface=".view.IDatatable"
       layer="collective.bibliocustomviews.interfaces.ILayer"
     />
-  <!--
-    <browser:page
-        name="biblio_search_view"
-        menu="plone_displayviews"
-        title="Bibliographic search view"
-        for="collective.bibliocustomviews.interfaces.ISearchViewEnabled"
-        class=".view.Search"
-        template="search.pt"
-        permission="zope.Public"
-        allowed_interface=".view.ISearch"
-        layer="collective.bibliocustomviews.interfaces.ILayer"
-      />
-  -->
-
   <browser:viewlet
       name="biblio.css"
       for="collective.bibliocustomviews.interfaces.IResourcesEnabled"
@@ -101,8 +87,6 @@
       layer="collective.bibliocustomviews.interfaces.ILayer"
       permission="zope2.View"
     />
-
-
   <five:implements
       class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
       interface="collective.bibliocustomviews.interfaces.IDatatableViewEnabled"/>
@@ -115,7 +99,6 @@
   <five:implements
       class="Products.ATContentTypes.content.topic.ATTopic"
       interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
-
   <faceted:view
       name="faceted-biblio-datatable-items"
       class=".view.Search"
@@ -130,7 +113,22 @@
       attribute="export"
       permission="zope2.View">
   </browser:page>
+   <faceted:view
+      name="faceted-datatable-items"
+      class=".view.Search"
+      template="datatables-simple-items.pt"
+      title="Faceted items preview in a table"
+      permission="zope2.View">
+  </faceted:view>
 
-
-  <!-- vim:set ft=xml: -->
+<!--
+  <five:implements
+      class="plone.app.contenttypes.content.Folder"
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
+  <five:implements
+      class="plone.app.contenttypes.content.Collection"
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
+-->
+  <include package="plone.resource" file="meta.zcml"/>
+<!-- vim:set ft=xml: -->
 </configure>

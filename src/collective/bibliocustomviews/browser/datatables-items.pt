@@ -20,6 +20,7 @@
           <div tal:define="view nocall:self">
             <form
               method="post"
+              tal:define="biblio_mode string:biblio" 
               action="@@faceted-datatable-items-export">
               <div metal:use-macro="cvmacros/do-listing"/>
               <br/>
@@ -73,7 +74,11 @@
           </div>
           <script type="text/javascript">
             jQuery(function($){
-              $('.field.collapsible').do_search_collapse();
+              try {
+                $('.field.collapsible').do_search_collapse();
+              } catch(e) {
+                jQuery('.field.collapsible').do_search_collapse();
+              }
             });
           </script>
           <div class="eea-preview-items">

@@ -44,7 +44,14 @@ def _render_contents(method, self, *args, **kwargs):
 def comparecustom(a):
     """
     sort by author and year."""
-    return '%s___%s' % (a.Authors, a.Title)
+    try:
+        first = a.Authors
+    except AttributeError:
+        try:
+            first = u"{0}".format(a.listCreators)
+        except Exception:
+            first = ''
+    return '%s___%s' % (first, a.Title)
 
 class IBibliocvUtils(interface.Interface):
     """Marker interface"""
