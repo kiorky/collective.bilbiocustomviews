@@ -57,7 +57,7 @@
             </td>
             </tal:block>
             <tal:block tal:condition="python:biblio_mode!='simple'">
-            <td tal:define="infos python:view.infosFor(item)|nothing">
+            <td tal:define="infos python:view.infosFor(item)">
               <div class="tileItem visualIEFloatFix vevent"
 
                 tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">

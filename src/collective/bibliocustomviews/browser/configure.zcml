@@ -97,6 +97,9 @@
       class="Products.CMFBibliographyAT.content.folder.BibliographyFolder"
       interface="collective.bibliocustomviews.interfaces.ISummaryViewEnabled"/>
   <five:implements
+      class="Products.ATContentTypes.content.folder.ATFolder"
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
+  <five:implements
       class="Products.ATContentTypes.content.topic.ATTopic"
       interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
   <faceted:view
