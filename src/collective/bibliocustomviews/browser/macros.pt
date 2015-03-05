@@ -7,6 +7,7 @@
   <body>
     <div metal:define-macro="do-listing"
       >
+      <input type="hidden" id="biblio_dt_mode" tal:attributes="value python:biblio_mode=='simple' and 'simple' or 'biblio'">
       <table
         tal:define="normalizeString nocall:context/@@plone/normalizeString;"
         id="biblio-datatable"
@@ -117,9 +118,8 @@
             bibliodt_datatables[id] = $('table.biblio-datatable').DataTable();
           }
           else {
-                bibliodt_datatables[id] = jelem.DataTable({
+               var bibliodt_opts = {
                 jQueryUI: true,
-                order: [],
                 dom: 'lpfrti<"clear">T',
                 autoWidth: false,
                 ordering: true,
@@ -130,7 +130,11 @@
                     {targets: [0], searchable: true, width: "90%" },
                     {targets: [1], searchable: true, width: "10%" }
               ]
-              });
+              };
+              if($("#biblio_dt_mode").val() == "simple") {
+                bibliodt_opts["orderData"] = [ [0, "asc"]];
+              }
+              bibliodt_datatables[id] = jelem.DataTable(bibliodt_opts);
           }
           bibliodt_tables[id] = jelem;
           $("input[type=text]", tfoot).each(function(i, inp){
@@ -163,7 +167,7 @@
       jQuery(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function() {
           bibliodt_activate();
       });
-      // jQuery(document).ready(bibliodt_activate);
+      jQuery(document).ready(bibliodt_activate);
       function biblio_toggle_input(elem, done) {
         if (!done) {
           $(elem).attr('checked', !$(elem).attr('checked'));
