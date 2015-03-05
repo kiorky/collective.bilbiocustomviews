@@ -104,27 +104,34 @@
         bibliodt_tables = new Array();
         bibliodt_datatables = new Array();
       }
-      jQuery(document).ready(function(){
+
+      function bibliodt_activate(){
         var bibliodt_elems = jQuery("table.biblio-datatable");
         bibliodt_elems.each(function(i, elem){
+          var jelem = jQuery(elem);
           var jelem = jQuery(elem);
           var id = jelem.attr("id");
           var tfoot = $("tfoot", jelem);
           bibliodt_asInitVals[id] = new Array();
-          bibliodt_datatables[id] = jelem.DataTable(
-          { jQueryUI: true,
-            order: [],
-            dom: 'lpfrti<"clear">T',
-            autoWidth: false,
-            ordering: true,
-            oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"},
-            paging: true,
-            pagingType: "full_numbers",
-            columnDefs: [
-                {targets: [0], searchable: true, width: "90%" },
-                {targets: [1], searchable: true, width: "10%" }
-          ]
-          });
+          if ($.fn.dataTable.isDataTable( 'table.biblio-datatable')) {
+            bibliodt_datatables[id] = $('table.biblio-datatable').DataTable();
+          }
+          else {
+                bibliodt_datatables[id] = jelem.DataTable({
+                jQueryUI: true,
+                order: [],
+                dom: 'lpfrti<"clear">T',
+                autoWidth: false,
+                ordering: true,
+                oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"},
+                paging: true,
+                pagingType: "full_numbers",
+                columnDefs: [
+                    {targets: [0], searchable: true, width: "90%" },
+                    {targets: [1], searchable: true, width: "10%" }
+              ]
+              });
+          }
           bibliodt_tables[id] = jelem;
           $("input[type=text]", tfoot).each(function(i, inp){
              jinp = jQuery(inp);
@@ -152,7 +159,11 @@
              });
           });
         });
+      }
+      jQuery(Faceted.Events).bind(Faceted.Events.AJAX_QUERY_SUCCESS, function() {
+          bibliodt_activate();
       });
+      // jQuery(document).ready(bibliodt_activate);
       function biblio_toggle_input(elem, done) {
         if (!done) {
           $(elem).attr('checked', !$(elem).attr('checked'));
