@@ -16,6 +16,7 @@
         toLocalizedTime nocall:context/@@plone/toLocalizedTime;
         here_url context/@@plone_context_state/object_url;
         portal context/@@plone_portal_state/portal;
+        biblio_mode string:biblio;
         member context/@@plone_portal_state/member;
         wtool context/portal_workflow;
         test nocall:view/test;">
