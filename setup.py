@@ -44,6 +44,7 @@ setup(
     install_requires=[
         'setuptools',
         'z3c.autoinclude',
+        'chardet',
         'Plone',
         'plone.app.upgrade',
         # with_ploneproduct_cmfbibliographyat

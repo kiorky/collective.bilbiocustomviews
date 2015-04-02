@@ -21,12 +21,15 @@ from Products.CMFBibliographyAT.interface import IBibliographicItem
 
 from plone.memoize import ram
 from time import time
+from collective.bibliocustomviews.utils import magicstring
 
 def five_minutes():
     return time() // (5 * 60)
 
+
 def fifteen_minutes():
     return time() // (15 * 60)
+
 
 def _render_details_cachekey(method, self, brain, firstfull=False, invert=False):
     try:
@@ -35,11 +38,13 @@ def _render_details_cachekey(method, self, brain, firstfull=False, invert=False)
         path = '/'.join(brain.getPhysicalPath())
     return (brain.getPath(), firstfull, invert, fifteen_minutes())
 
+
 def _render_contents(method, self, *args, **kwargs):
     hs = fifteen_minutes()
     ids = [a for a in self.context.objectIds()]
     ids.sort()
     return (self.context.getPhysicalPath(), ids, hs)
+
 
 def comparecustom(a):
     """
@@ -51,7 +56,8 @@ def comparecustom(a):
             first = u"{0}".format(a.listCreators)
         except Exception:
             first = ''
-    return '%s___%s' % (first, a.Title)
+    return '%s___%s' % (magicstring(first), magicstring(a.Title))
+
 
 class IBibliocvUtils(interface.Interface):
     """Marker interface"""
