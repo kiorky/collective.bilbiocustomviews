@@ -100,6 +100,9 @@
       class="Products.ATContentTypes.content.folder.ATFolder"
       interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
   <five:implements
+      class="plone.app.collection.collection.Collection"
+      interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
+  <five:implements
       class="Products.ATContentTypes.content.topic.ATTopic"
       interface="collective.bibliocustomviews.interfaces.ISearchViewEnabled"/>
   <faceted:view

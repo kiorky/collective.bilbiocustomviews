@@ -125,6 +125,8 @@
                 ordering: true,
                 oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"},
                 paging: true,
+                lengthMenu: [[100, 5, 10, 25, 50, -1], [100, 5, 10, 25, 50, "All"]],
+                iDisplayLength: 100,
                 pagingType: "full_numbers",
                 columnDefs: [
                     {targets: [0], searchable: true, width: "90%" },
