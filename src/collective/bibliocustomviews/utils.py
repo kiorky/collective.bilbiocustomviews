@@ -2,11 +2,21 @@
 # -*- coding: utf-8 -*-
 __docformat__ = 'restructuredtext en'
 import chardet
+import datetime
 
 
 def magicstring(thestr):
-    """Convert any string to UTF-8 ENCODED one"""
+    """
+    Convert any string to UTF-8 ENCODED one
+    """
     seek = False
+    if (
+        isinstance(thestr, (int, float, long,
+                            datetime.date,
+                            datetime.time,
+                            datetime.datetime))
+    ):
+        thestr = "{0}".format(thestr)
     if isinstance(thestr, unicode):
         try:
             thestr = thestr.encode('utf-8')
@@ -33,14 +43,14 @@ def magicstring(thestr):
                 if not isinstance(thestr, unicode):
                     thestr = thestr.decode(detectedenc)
                 thestr = thestr.encode(detectedenc)
-            except:
+            except Exception:
                 for idx, i in enumerate(found_encodings):
                     try:
                         if not isinstance(thestr, unicode) and detectedenc:
                             thestr = thestr.decode(detectedenc)
                         thestr = thestr.encode(i)
                         break
-                    except:
+                    except Exception:
                         if idx == (len(found_encodings) - 1):
                             raise
     if isinstance(thestr, unicode):

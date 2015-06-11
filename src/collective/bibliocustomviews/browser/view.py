@@ -56,13 +56,24 @@ def comparecustom(a):
             first = u"{0}".format(a.listCreators)
         except Exception:
             first = ''
-    return '%s___%s' % (magicstring(first), magicstring(a.Title))
+    try:
+        first = magicstring(first)
+    except UnicodeDecodeError:
+        try:
+            if a.bAuthorsList and "\\x" in repr(first[-1:]):
+                initial = a.bAuthorsList[-1][1][0:2]
+                first = magicstring(first[:-1] + initial)
+        except Exception:
+            first = ''
+    return '%s___%s' % (first, magicstring(a.Title))
+
 
 
 class IBibliocvUtils(interface.Interface):
     """Marker interface"""
     def test(a, b, c):
         """."""
+
     def getSource(self):
         """."""
 
@@ -74,6 +85,7 @@ class IBibliocvUtils(interface.Interface):
 
     def author_repeat_sep(self, repeat, key):
         """."""
+
 
 def format_firstname(text, firstfull=False):
     parts = []
@@ -88,6 +100,7 @@ def format_firstname(text, firstfull=False):
     txt = ' '.join(parts)
     txt = txt.replace('.-', '-')
     return txt
+
 
 class BibliocvUtils(BrowserView):
     interface.implements(IBibliocvUtils)
@@ -155,12 +168,13 @@ class BibliocvUtils(BrowserView):
             for e in authors:
                 result = []
                 for k in self.ifs:
-                    if not k in e:
+                    if k not in e:
                         e[k] = ''
                     result.append(e[k])
                 results.append(tuple(result))
             if results:
                 return results
+
 
 class ISummaryView(interface.Interface):
     """Marker interface"""
@@ -169,8 +183,12 @@ class ISummaryView(interface.Interface):
         """."""
     def infosFor(it):
         """."""
-    def getFolderContents(contentFilter=None, batch=False,b_size=100,full_objects=False):
+    def getFolderContents(contentFilter=None,
+                          batch=False,
+                          b_size=100,
+                          full_objects=False):
         """."""
+
 
 class SummaryView(BibliocvUtils):
     """MY view doc"""
@@ -263,7 +281,7 @@ class SummaryView(BibliocvUtils):
                         author,
                     )
                 if author:
-                    if "\\x"  in repr(author[-2:]):
+                    if "\\x" in repr(author[-2:]):
                         initial = ue[1][0:2]
                         author = author[:-2] + initial + author[-1:]
                 e['author'] = author
@@ -291,19 +309,24 @@ class SummaryView(BibliocvUtils):
 class IBibliocvMacros(ISummaryView):
     """."""
 
+
 class BibliocvMacros(SummaryView):
     """."""
     def __init__(self, *args, **kwargs):
         SummaryView.__init__(self, *args, **kwargs)
 
+
 class IDatatable(ISummaryView):
     """."""
+
 
 class Datatable(SummaryView):
     """."""
 
+
 class ISearch(ISummaryView):
     """."""
+
 
 class Search(SummaryView):
     """."""
