@@ -6,8 +6,10 @@
   i18n:domain="plone">
   <body>
     <div metal:define-macro="do-listing"
-      >
-      <input type="hidden" id="biblio_dt_mode" tal:attributes="value python:biblio_mode=='simple' and 'simple' or 'biblio'">
+      tal:define="biblio_mode python:biblio_mode and biblio_mode or ''">
+      <input
+        type="hidden" id="biblio_dt_mode"
+        tal:attributes="value python:biblio_mode.startswith('simple') and biblio_mode or 'biblio'">
       <table
         tal:define="normalizeString nocall:context/@@plone/normalizeString;"
         id="biblio-datatable"
@@ -18,11 +20,12 @@
 
               </td>
             </tr>
-            <tr tal:condition="python:biblio_mode=='simple'">
+            <tr tal:condition="python:'simple' in biblio_mode">
               <th>Items</th>
-              <th>date</th>
+              <th tal:condition="python:biblio_mode in ['simple', 'simpletags']">tags</th>
+              <th tal:condition="python:biblio_mode in ['simple', 'simpledate']">date</th>
             </tr>
-            <tr tal:condition="python:biblio_mode!='simple'">
+            <tr tal:condition="python:'simple' not in biblio_mode">
               <th>Bibliography items</th>
               <th>Publication date</th>
             </tr>
@@ -40,7 +43,7 @@
             item_modified item/ModificationDate;
             item_created item/CreationDate;"
             >
-            <tal:block tal:condition="python:biblio_mode=='simple'">
+            <tal:block tal:condition="python:'simple' in biblio_mode">
             <td>
               <div class="tileItem visualIEFloatFix vevent"
 
@@ -49,7 +52,14 @@
                 <div class="visualClear"><!-- --></div>
               </div>
             </td>
-            <td>
+            <td tal:condition="python:biblio_mode in ('simple', 'simpletags')">
+              <div class="tileItem visualIEFloatFix vevent"
+                tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
+                    <div metal:use-macro="cvmacros/listsimpletags"/>
+                <div class="visualClear"><!-- --></div>
+              </div>
+            </td>
+            <td tal:condition="python:biblio_mode in ('simple', 'simpledate')">
               <div class="tileItem visualIEFloatFix vevent"
                 tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
                     <div metal:use-macro="cvmacros/listsimpledate"/>
@@ -57,7 +67,7 @@
               </div>
             </td>
             </tal:block>
-            <tal:block tal:condition="python:biblio_mode!='simple'">
+            <tal:block tal:condition="python:'simple' not in biblio_mode">
             <tal:block  tal:define="infos python:view.infosFor(item)">
             <td>
               <div class="tileItem visualIEFloatFix vevent"
@@ -80,7 +90,7 @@
         </tal:block>
       </tbody>
       <tfoot>
-        <tr tal:condition="python:biblio_mode!='simple'">
+        <tr tal:condition="python:'simple' not in biblio_mode">
           <td>
             <input type="button"
               onClick="javascript:biblio_toggle_selected_items();return false;"
@@ -111,6 +121,22 @@
         bibliodt_elems.each(function(i, elem){
           var jelem = jQuery(elem);
           var jelem = jQuery(elem);
+          var thislengthmenu = [[100, 5, 10, 25, 50, -1],
+                                [100, 5, 10, 25, 50, "All"]];
+          var thiscolumndefs = [
+            {targets: [0], searchable: true, width: "90%" },
+            {targets: [1], searchable: true, width: "10%" }
+          ];
+          if($("#biblio_dt_mode").val().indexOf("simpledate") === 0) {
+            thiscolumndefs[0]["width"] = "80%";
+            thiscolumndefs.push(
+              [{targets: [2], searchable: true, width: "10%" }]);
+          }
+          if($("#biblio_dt_mode").val().indexOf("simpletags") === 0) {
+              thiscolumndefs[0]["width"] = "80%";
+              thiscolumndefs.push(
+                [{targets: [2], searchable: true, width: "10%" }]);
+          }
           var id = jelem.attr("id");
           var tfoot = $("tfoot", jelem);
           bibliodt_asInitVals[id] = new Array();
@@ -125,15 +151,12 @@
                 ordering: true,
                 oTableTools: {"sSwfPath": "++resource++jquery.datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"},
                 paging: true,
-                lengthMenu: [[100, 5, 10, 25, 50, -1], [100, 5, 10, 25, 50, "All"]],
+                lengthMenu: thislengthmenu,
                 iDisplayLength: 100,
                 pagingType: "full_numbers",
-                columnDefs: [
-                    {targets: [0], searchable: true, width: "90%" },
-                    {targets: [1], searchable: true, width: "10%" }
-              ]
+                columnDefs: thiscolumndefs
               };
-              if($("#biblio_dt_mode").val() == "simple") {
+              if($("#biblio_dt_mode").val().indexOf("simple") === 0) {
                 bibliodt_opts["orderData"] = [ [0, "asc"]];
               }
               bibliodt_datatables[id] = jelem.DataTable(bibliodt_opts);
@@ -239,6 +262,13 @@
       <metal:block  metal:define-macro="display-simple-reference">
         <span class="ref-title">.&nbsp;<a href="#" class="summary url" tal:content="item/Title"
           tal:attributes="href item/getURL|nothing;"> </a>
+        </span>
+      </metal:block>
+    </p>
+    <p metal:define-macro="listsimpletags" tal:define="editable editable|nothing;">
+      <metal:block  metal:define-macro="display-simple-reference-tags">
+        <span class="ref-tags">
+          <tal:myblock tal:condition="item/Subject" tal:replace="python:', '.join(item.Subject)"/>
         </span>
       </metal:block>
     </p>
