@@ -294,16 +294,44 @@ class SummaryView(BibliocvUtils):
                 path={'depth': 0, 'query': path},
                 getRawRelatedItems=related))]))
 
+        path = it.getPath()
+        if not path:
+            path = ''
+        else:
+            try:
+                try:
+                    path = path[len(self.root_path)+1:]
+                except Exception:
+                    pass
+            except Exception:
+                path = ''
+
         data = {
             'has_relitems': has_relitems,
+            'title': title,
             'authors': authors,
             'authors_links': authors_links,
             'title': title.strip(),
             'publication_year': it.publication_year,
             'source': it.bSource,
+            'path': path,
             'url': it.getURL(),
         }
         return data
+
+    @property
+    def root(self):
+        portal_state = getMultiAdapter(
+            (self.context, self.request),
+            name=u'plone_portal_state'
+        )
+        return portal_state.navigation_root()
+
+    @property
+    def root_path(self):
+        return '/'.join(
+            self.root.getPhysicalPath()
+        )
 
 
 class IBibliocvMacros(ISummaryView):
