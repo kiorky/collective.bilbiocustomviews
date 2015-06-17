@@ -123,19 +123,26 @@
           var jelem = jQuery(elem);
           var thislengthmenu = [[100, 5, 10, 25, 50, -1],
                                 [100, 5, 10, 25, 50, "All"]];
+          // 2 columns layuouts = 60 / 30
           var thiscolumndefs = [
-            {targets: [0], searchable: true, width: "90%" },
-            {targets: [1], searchable: true, width: "10%" }
+            {targets: [0], searchable: true, width: "60%" },
           ];
-          if($("#biblio_dt_mode").val().indexOf("simpledate") === 0) {
-            thiscolumndefs[0]["width"] = "80%";
-            thiscolumndefs.push(
-              [{targets: [2], searchable: true, width: "10%" }]);
+          if($("#biblio_dt_mode").val().indexOf("simpledate") != 0
+             && $("#biblio_dt_mode").val().indexOf("simpletags") != 0) {
+            thiscolumndefs[0].width = "60%";
+            thiscolumndefs.push({targets: [1], searchable: true, width: "30%"});
+            thiscolumndefs.push({targets: [2], searchable: true, width: "10%"});
           }
-          if($("#biblio_dt_mode").val().indexOf("simpletags") === 0) {
-              thiscolumndefs[0]["width"] = "80%";
-              thiscolumndefs.push(
-                [{targets: [2], searchable: true, width: "10%" }]);
+          else if($("#biblio_dt_mode").val().indexOf("simpledate") === 0) {
+            thiscolumndefs[0].width = "90%";
+            thiscolumndefs.push({targets: [1], searchable: true, width: "10%"});
+
+          }
+          else if($("#biblio_dt_mode").val().indexOf("simpletags") === 0) {
+            thiscolumndefs[0].width = "60%";
+            thiscolumndefs.push({targets: [1], searchable: true, width: "40%"});
+          } else {
+            thiscolumndefs[0].width = "100%";
           }
           var id = jelem.attr("id");
           var tfoot = $("tfoot", jelem);
