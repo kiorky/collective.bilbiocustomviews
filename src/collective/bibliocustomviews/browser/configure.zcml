@@ -134,6 +134,13 @@
       permission="zope2.View">
     </faceted:view>
     <faceted:view
+      name="faceted-datatable-tags-desc-items"
+      class=".view.Search"
+      template="datatables-simple-tags-desc-items.pt"
+      title="Faceted items preview in a table (tags and description)"
+      permission="zope2.View">
+    </faceted:view>
+    <faceted:view
       name="faceted-datatable-tags-items"
       class=".view.Search"
       template="datatables-simple-date-items.pt"

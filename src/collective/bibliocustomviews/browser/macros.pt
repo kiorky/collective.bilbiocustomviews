@@ -22,7 +22,7 @@
             </tr>
             <tr tal:condition="python:'simple' in biblio_mode">
               <th>Items</th>
-              <th tal:condition="python:biblio_mode in ['simple', 'simpletags']">tags</th>
+              <th tal:condition="python:biblio_mode in ['simple', 'simpletags_and_desc', 'simpletags']">tags</th>
               <th tal:condition="python:biblio_mode in ['simple', 'simpledate']">date</th>
             </tr>
             <tr tal:condition="python:'simple' not in biblio_mode">
@@ -52,7 +52,7 @@
                 <div class="visualClear"><!-- --></div>
               </div>
             </td>
-            <td tal:condition="python:biblio_mode in ('simple', 'simpletags')">
+            <td tal:condition="python:biblio_mode in ('simple', 'simpletags_and_desc', 'simpletags')">
               <div class="tileItem visualIEFloatFix vevent"
                 tal:attributes="class string:tileItem visualIEFloatFix vevent ${item_type_class}">
                     <div metal:use-macro="cvmacros/listsimpletags"/>
@@ -128,7 +128,9 @@
             {targets: [0], searchable: true, width: "60%" },
           ];
           if($("#biblio_dt_mode").val().indexOf("simpledate") != 0
-             && $("#biblio_dt_mode").val().indexOf("simpletags") != 0) {
+          && (
+            $("#biblio_dt_mode").val().indexOf("simpletags") != 0
+          )) {
             thiscolumndefs[0].width = "60%";
             thiscolumndefs.push({targets: [1], searchable: true, width: "30%"});
             thiscolumndefs.push({targets: [2], searchable: true, width: "10%"});
@@ -270,6 +272,12 @@
         <span class="ref-title">.&nbsp;<a href="#" class="summary url" tal:content="item/Title"
           tal:attributes="href item/getURL|nothing;"> </a>
         </span>
+        <tal:block tal:condition="item/Description|nothing">
+        <tal:block tal:condition="python: biblio_mode=='simpletags_and_desc'">
+          <br/>
+          <span class="inner_desc" tal:content="item/Description|nothing"/>
+        </tal:block>
+        </tal:block>
       </metal:block>
     </p>
     <p metal:define-macro="listsimpletags" tal:define="editable editable|nothing;">
