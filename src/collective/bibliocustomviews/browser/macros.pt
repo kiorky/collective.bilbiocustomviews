@@ -127,7 +127,11 @@
           var thiscolumndefs = [
             {targets: [0], searchable: true, width: "60%" },
           ];
-          if($("#biblio_dt_mode").val().indexOf("simpledate") != 0
+          if($("#biblio_dt_mode").val() == "biblio") {
+            thiscolumndefs[0].width = "90%";
+            thiscolumndefs.push({targets: [1], searchable: true, width: "10%"});
+          }
+          else if($("#biblio_dt_mode").val().indexOf("simpledate") != 0
           && (
             $("#biblio_dt_mode").val().indexOf("simpletags") != 0
           )) {
@@ -138,7 +142,6 @@
           else if($("#biblio_dt_mode").val().indexOf("simpledate") === 0) {
             thiscolumndefs[0].width = "90%";
             thiscolumndefs.push({targets: [1], searchable: true, width: "10%"});
-
           }
           else if($("#biblio_dt_mode").val().indexOf("simpletags") === 0) {
             thiscolumndefs[0].width = "60%";
